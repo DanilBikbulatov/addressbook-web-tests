@@ -3,11 +3,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
+using WebAddressbookTests.Tests;
 
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactRemovalTests : TestBase
+    public class ContactRemovalTests : AuthTestBase
     {
         [Test]
         public void ContactRemovalTest()
