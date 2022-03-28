@@ -4,6 +4,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using WebAddressbookTests.Tests;
 
 namespace WebAddressbookTests
@@ -17,6 +20,10 @@ namespace WebAddressbookTests
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
+            if (app.Groups.IsElementPresent(By.Name("selected[]")) != true)
+            {
+                app.Groups.Create(new GroupData("ahahah"));
+            }
             app.Groups.Remove(0);
 
             List<GroupData> newGroups = app.Groups.GetGroupList();

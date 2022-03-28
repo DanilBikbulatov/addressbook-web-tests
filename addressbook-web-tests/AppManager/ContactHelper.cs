@@ -26,44 +26,31 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.GoToHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
+            foreach (IWebElement element in elements)
+            {
+                contacts.Add(new ContactData(element.Text));
+            }
+            return contacts;
+        }
+
         public ContactHelper Modify(int p, ContactData newData)
         {
             manager.Navigator.GoToHomePage();
-            if (IsElementPresent(By.Name("selected[]")))
-            {
-                SelectContact(p);
-            }
-            else 
-            {
-                InitNewContactCreation();               
-                FillContactForm(newData);
-                SubmitContactCreation();
-                manager.Navigator.ReturnToHomePage();
-                SelectContact(p);
-            }
-            InitContactModification();
+            InitContactModification(p);
             FillContactForm(newData);
             SubmitContactModification();
-            manager.Navigator.ReturnToHomePage();
             return this;
         }
 
         public ContactHelper Remove(int j)
         {
             manager.Navigator.GoToHomePage();
-            if (IsElementPresent(By.Name("selected[]")))
-            {
-                SelectContact(j);
-            }
-            else
-            {
-                InitNewContactCreation();
-                ContactData contact = null;
-                FillContactForm(contact);
-                SubmitContactCreation();
-                manager.Navigator.ReturnToHomePage();
-                SelectContact(j);
-            }
+            SelectContact(j);
             RemoveContact();
             CloseContactAlert();
             manager.Navigator.OpenToHomePage();
@@ -93,15 +80,15 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactModification()
+        public ContactHelper InitContactModification(int index)
         {
-            driver.FindElement(By.XPath("//img[@alt='Edit']")).Click();
+            driver.FindElement(By.XPath("//tr[@name='entry'][" + (index + 1) + "]//img[@src='icons/pencil.png']")).Click();
             return this;
         }
 
-        public ContactHelper SelectContact(int p)
+        public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("//*[@id='maintable']/tbody/tr/td[" + p + "]/input")).Click();
+            driver.FindElement(By.XPath("//tr[@name='entry'][" + (index + 1) + "]//input")).Click();
             return this;
         }
 
