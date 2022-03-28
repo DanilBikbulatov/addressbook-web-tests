@@ -18,12 +18,12 @@ namespace WebAddressbookTests
             ContactData newData = new ContactData("slava");
             newData.FirstName = null;
 
-            if (app.Contacts.IsElementPresent(By.Name("erilo")) != true)
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
+
+            if (app.Contacts.IsElementPresent(By.Name("selected[]")))
             {
                 app.Contacts.Create(new ContactData("georg"));
             }
-
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
 
             app.Contacts.Modify(0, newData);
 
